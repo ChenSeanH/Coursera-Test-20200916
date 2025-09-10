@@ -1,0 +1,15 @@
+# Python
+.venv/
+__pycache__/
+*.pyc
+
+# Node / general web
+node_modules/
+dist/
+
+# OS & editor
+.DS_Store
+.vscode/
+
+# Generated data
+public/data.json

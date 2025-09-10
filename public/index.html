@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<title>GIA Demo — Age vs Parent Satisfaction</title>
+<body>
+  <svg id="viz" width="700" height="460"></svg>
+  <script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+  <script type="module">
+    const svg = d3.select("#viz");
+    const width = +svg.attr("width");
+    const height = +svg.attr("height");
+    const margin = {top: 40, right: 30, bottom: 40, left: 50};
+
+    // 1) Fetch JSON produced by the Python script
+    const data = await fetch("./data.json").then(r => r.json());
+
+    // 2) Scales
+    const x = d3.scaleLinear()
+      .domain(d3.extent(data, d => d.Age))
+      .range([margin.left, width - margin.right])
+      .nice();
+
+    const y = d3.scaleLinear()
+      .domain(d3.extent(data, d => d.Parent_Satisfaction_Score))
+      .range([height - margin.bottom, margin.top])
+      .nice();
+
+    // 3) Axes
+    svg.append("g")
+      .attr("transform", `translate(0,${height - margin.bottom})`)
+      .call(d3.axisBottom(x));
+    svg.append("g")
+      .attr("transform", `translate(${margin.left},0)`)
+      .call(d3.axisLeft(y));
+
+    // 4) Points
+    svg.selectAll("circle")
+      .data(data)
+      .join("circle")
+      .attr("cx", d => x(d.Age))
+      .attr("cy", d => y(d.Parent_Satisfaction_Score))
+      .attr("r", 5)
+      .attr("opacity", 0.8);
+
+    // 5) Title
+    svg.append("text")
+      .attr("x", width/2)
+      .attr("y", margin.top - 16)
+      .attr("text-anchor", "middle")
+      .attr("font-weight", "600")
+      .text("Age vs Parent Satisfaction");
+  </script>
+</body>
