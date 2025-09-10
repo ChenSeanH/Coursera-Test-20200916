@@ -1,7 +1,7 @@
 import pandas as pd
 import json, pathlib, sys
 
-# Paths
+# Paths ?? need to change the csv file name
 CSV_IN = pathlib.Path("data/raw.csv")
 JSON_OUT = pathlib.Path("public/data.json")
 
